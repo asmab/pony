@@ -36,6 +36,7 @@ from pony.utils import throw, get_version_tuple
 from pony.converting import str2timedelta, timedelta2str
 
 from pony.migrate.operations import Op, alter_table
+from enum import Enum
 
 class MySQLIndex(dbschema.DBIndex):
     rename_sql_template = 'ALTER TABLE %(table_name)s RENAME INDEX %(prev_name)s TO %(new_name)s'
@@ -230,6 +231,20 @@ class MySQLJsonConverter(dbapiprovider.JsonConverter):
             version = '.'.join(imap(str, self.provider.server_version))
             raise NotImplementedError("MySQL %s has no JSON support" % version)
 
+class EnumConverter(dbapiprovider.StrConverter):
+    def validate(self, val, obj=None):
+        if not isinstance(val, Enum):
+            raise ValueError(
+                'Must be an Enum.  Got {}'.format(type(val))
+            )
+        return val
+
+    def py2sql(self, val):
+        return val.name
+
+    def sql2py(self, value):
+        return self.py_type[value]
+
 class MySQLProvider(DBAPIProvider):
     dialect = 'MySQL'
     paramstyle = 'format'
@@ -263,6 +278,7 @@ class MySQLProvider(DBAPIProvider):
         (UUID, MySQLUuidConverter),
         (buffer, MySQLBlobConverter),
         (ormtypes.Json, MySQLJsonConverter),
+        (Enum, EnumConverter)
     ]
 
     @wrap_dbapi_exceptions
