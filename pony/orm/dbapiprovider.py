@@ -387,6 +387,7 @@ class Pool(localbase):
         pool.kwargs = kwargs
         pool.con = pool.pid = None
     def connect(pool):
+        print('in Pool class. connect ...')
         pid = os.getpid()
         if pool.con is not None and pool.pid != pid:
             pool.forked_connections.append((pool.con, pool.pid))

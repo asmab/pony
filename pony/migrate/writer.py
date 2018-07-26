@@ -21,7 +21,6 @@ def indent(text, prefix):
 
 
 def get_entities(db):
-    print('get enti9ties')
     return {entity_name: entity for entity_name, entity in db.entities.items() if entity_name != 'Migration'}
 
 
