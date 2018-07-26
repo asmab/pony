@@ -212,6 +212,7 @@ class MigrationGraph(object):
 
     @staticmethod
     def _write_migration_file(name, generated):
+        print('in _write_migration_file')
         path = os.path.join(get_migration_dir(), '%s.py' % name)
         with open(path, 'w') as f:
             f.write(generated)
@@ -225,6 +226,7 @@ class MigrationGraph(object):
         if len(leaves) > 1: throw(UnmergedMigrationsDetected, leaves)
 
         if not leaves:
+            print('if no leaves : before MigrationWriter')
             generated = MigrationWriter(leaves, None, db).as_string()
             return self._write_migration_file('0001_initial', generated)
 
