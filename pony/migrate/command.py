@@ -93,6 +93,7 @@ def _migrate(db, cmd, name=None, start=None, end=None,
     graph = MigrationGraph()
     with cmd_exitstack:
         if cmd == 'make':
+            print('_migrate function with make cmd')
             return graph.make(db=db, empty=empty, custom=custom, description=name)
         elif cmd == 'list':
             show_migrations(db=db)
