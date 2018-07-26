@@ -228,6 +228,7 @@ class MigrationGraph(object):
         if not leaves:
             print('if no leaves : before MigrationWriter')
             generated = MigrationWriter(leaves, None, db).as_string()
+            print('generated ', generated)
             return self._write_migration_file('0001_initial', generated)
 
         [leaf] = leaves
@@ -287,7 +288,7 @@ class MigrationGraph(object):
             generated = MIGRATION_TEMPLATE.format(**ctx)
             return self._write_migration_file(name, generated)
 
-        writer = MigrationWriter(leaves, prev_db, db)
+        writer = FMigrationWriter(leaves, prev_db, db)
         generated = writer.as_string()
         if not writer.operations:
             print('No changes.')
