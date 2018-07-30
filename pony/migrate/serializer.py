@@ -27,6 +27,7 @@ def serialize(value, imports=None, initial_migration=False):
 
 def serialize_entity_declaration(entity, imports=None):
     serializer = Serializer(imports, True)
+    print('entity ', entity)
     return serializer.serialize_entity_declaration(entity)
 
 
@@ -198,6 +199,7 @@ class Serializer(object):
         return "re.compile(%s)" % ', '.join(args)
 
     def serialize(self, value):
+        print('value is ', value)
         if isinstance(value, core.Attribute):
             return self.serialize_deconstructable(value)
         if isinstance(value, core.EntityMeta):
@@ -220,6 +222,8 @@ class Serializer(object):
         if isinstance(value, dict):
             return self.serialize_dict(value)
         if enum and isinstance(value, enum.Enum):
+            print('enum value', value)
+            print('return val', self.serialize_enum(value))
             return self.serialize_enum(value)
         if isinstance(value, datetime.datetime):
             return self.serialize_datetime(value)

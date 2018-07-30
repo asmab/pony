@@ -394,6 +394,7 @@ class Pool(localbase):
             pool.con = pool.pid = None
         core = pony.orm.core
         if pool.con is None:
+            print('GET NEW CONNECTION')
             if core.local.debug: core.log_orm('GET NEW CONNECTION')
             pool._connect()
             pool.pid = pid
